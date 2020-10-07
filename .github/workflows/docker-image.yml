@@ -1,0 +1,40 @@
+name: Docker Image CI
+on: push
+jobs:
+  push_to_registries:
+    name: Push Docker Image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [7.1, 7.2, 7.3, 7.4]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: build image
+        run: docker build . --build-arg PHP_VERSION=${{ matrix.version }} -t taku-yamashita/warden-php-fpm:${{ matrix.version }}
+
+      - name: azure/container scan
+        uses: Azure/container-scan@v0
+        with:
+          image-name: taku-yamashita/warden-php-fpm:${{ matrix.version }}
+          severity-threshold: CRITICAL
+
+      - name: push to docker hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: ytaku/warden-php-fpm
+          build_args: PHP_VERSION=${{ matrix.version }}
+          tags: ${{ matrix.version }}
+
+      - name: push to ghcr.io
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          registry: ghcr.io
+          repository: taku-yamashita/warden-php-fpm
+          build_args: PHP_VERSION=${{ matrix.version }}
+          tags: ${{ matrix.version }}

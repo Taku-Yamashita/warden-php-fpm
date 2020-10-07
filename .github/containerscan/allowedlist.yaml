@@ -1,0 +1,8 @@
+general:
+  vulnerabilities:
+    - CVE-2013-1569
+    - CVE-2013-2383
+    - CVE-2013-2384
+    - CVE-2015-0469
+    - CVE-2015-4760
+    - CVE-2015-4844
