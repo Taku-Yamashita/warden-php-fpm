@@ -1,5 +1,6 @@
 ![](https://github.com/Taku-Yamashita/warden-php-fpm/workflows/Build/badge.svg)
 ![](https://github.com/Taku-Yamashita/warden-php-fpm/workflows/Test/badge.svg)
+![](https://badgen.net/github/dependabot/Taku-Yamashita/warden-php-fpm)
 
 Create `PROJECT_ROOT/.warden/warden-env.yml`
 ```
